@@ -386,7 +386,12 @@ generate_config_file() {
             4 ) NodeType="Trojan" ;;
             * ) NodeType="Shadowsocks" ;;
         esac
+        read -p "请输入证书对应域名：" Domain
+        read -p "请输入证书文件远程url：" CertUrl
+        read -p "请输入证书密匙文件远程url：" KeyUrl
         cd /etc/XrayR
+        wget -N --no-check-certificate "$CertUrl" -O domain.cert
+        wget -N --no-check-certificate "$KeyUrl" -O domain.key
         mv config.yml config.yml.bak
         cat <<EOF > /etc/XrayR/config.yml
 Log:
@@ -423,6 +428,7 @@ Nodes:
       UpdatePeriodic: 60 # Time to update the nodeinfo, how many sec.
       EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
       DNSType: AsIs # AsIs, UseIP, UseIPv4, UseIPv6, DNS strategy
+      DisableSniffing: true
       EnableProxyProtocol: false # Only works for WebSocket and TCP
       EnableFallback: false # Only support for Trojan and Vless
       FallBackConfigs:  # Support multiple fallbacks
@@ -432,15 +438,15 @@ Nodes:
           Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/fallback/ for details.
           ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for dsable
       CertConfig:
-        CertMode: dns # Option about how to get certificate: none, file, http, dns. Choose "none" will forcedly disable the tls config.
-        CertDomain: "node1.test.com" # Domain to cert
-        CertFile: /etc/XrayR/cert/node1.test.com.cert # Provided if the CertMode is file
-        KeyFile: /etc/XrayR/cert/node1.test.com.key
-        Provider: alidns # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
-        Email: test@me.com
-        DNSEnv: # DNS ENV option used by DNS provider
-          ALICLOUD_ACCESS_KEY: aaa
-          ALICLOUD_SECRET_KEY: bbb
+        CertMode: file # Option about how to get certificate: none, file, http, dns. Choose "none" will forcedly disable the tls config.
+        CertDomain: "$Domain" # Domain to cert
+        CertFile: /etc/XrayR/cert/domain.cert # Provided if the CertMode is file
+        KeyFile: /etc/XrayR/cert/domain.key
+        #Provider: alidns # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
+        #Email: test@me.com
+        #DNSEnv: # DNS ENV option used by DNS provider
+          #ALICLOUD_ACCESS_KEY: aaa
+          #ALICLOUD_SECRET_KEY: bbb
 EOF
         echo -e "${green}XrayR 配置文件生成完成，正在重新启动 XrayR 服务${plain}"
         xrayr restart
