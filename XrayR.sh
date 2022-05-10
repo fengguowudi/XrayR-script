@@ -388,8 +388,8 @@ generate_config_file() {
         read -p "请输入证书文件远程url：" CertUrl
         read -p "请输入证书密匙文件远程url：" KeyUrl
         cd /etc/XrayR
-        wget -N --no-check-certificate "$CertUrl" -O domain.cert
-        wget -N --no-check-certificate "$KeyUrl" -O domain.key
+        wget --no-check-certificate -O domain.cert $CertUrl
+        wget --no-check-certificate -O domain.key $KeyUrl
         mv config.yml config.yml.bak
         cat <<EOF > /etc/XrayR/config.yml
 Log:
