@@ -438,8 +438,8 @@ Nodes:
       CertConfig:
         CertMode: file # Option about how to get certificate: none, file, http, dns. Choose "none" will forcedly disable the tls config.
         CertDomain: "$Domain" # Domain to cert
-        CertFile: /etc/XrayR/cert/domain.cert # Provided if the CertMode is file
-        KeyFile: /etc/XrayR/cert/domain.key
+        CertFile: /etc/XrayR/domain.cert # Provided if the CertMode is file
+        KeyFile: /etc/XrayR/domain.key
         #Provider: alidns # DNS cert provider, Get the full support list here: https://go-acme.github.io/lego/dns/
         #Email: test@me.com
         #DNSEnv: # DNS ENV option used by DNS provider
