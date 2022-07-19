@@ -145,8 +145,8 @@ install_XrayR() {
     cp geoip.dat /etc/XrayR/
     cp geosite.dat /etc/XrayR/ 
 
-    if [[ ! -f /etc/XrayR/config.yml ]]; then
-        cp config.yml /etc/XrayR/
+    if [[ ! -f /etc/XrayR/aiko.yml ]]; then
+        cp aiko.yml /etc/XrayR/
         echo -e ""
         echo -e "全新安装，请先参看教程：https://github.com/XrayR-project/XrayR，配置必要的内容"
     else
@@ -173,8 +173,8 @@ install_XrayR() {
     if [[ ! -f /etc/XrayR/custom_inbound.json ]]; then
         cp custom_inbound.json /etc/XrayR/
     fi
-    if [[ ! -f /etc/XrayR/rulelist ]]; then
-        cp rulelist /etc/XrayR/
+    if [[ ! -f /etc/XrayR/AikoBlock ]]; then
+        cp AikoBlock /etc/XrayR/
     fi
     curl -o /usr/bin/XrayR -Ls https://raw.githubusercontent.com/fengguowudi/XrayR-script/master/XrayR.sh
     chmod +x /usr/bin/XrayR
