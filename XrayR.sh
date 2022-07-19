@@ -111,7 +111,7 @@ update() {
 
 config() {
     echo "XrayR在修改配置后会自动尝试重启"
-    vi /etc/XrayR/config.yml
+    vi /etc/XrayR/aiko.yml
     sleep 2
     check_status
     case $? in
@@ -350,8 +350,8 @@ generate_config_file() {
     echo -e "${yellow}XrayR 配置文件生成向导${plain}"
     echo -e "${red}请阅读以下注意事项：${plain}"
     echo -e "${red}1. 目前该功能正处测试阶段${plain}"
-    echo -e "${red}2. 生成的配置文件会保存到 /etc/XrayR/config.yml${plain}"
-    echo -e "${red}3. 原来的配置文件会保存到 /etc/XrayR/config.yml.bak${plain}"
+    echo -e "${red}2. 生成的配置文件会保存到 /etc/XrayR/aiko.yml${plain}"
+    echo -e "${red}3. 原来的配置文件会保存到 /etc/XrayR/aiko.yml.bak${plain}"
     echo -e "${red}4. 目前不支持TLS${plain}"
     read -rp "是否继续生成配置文件？(y/n)" generate_config_file_continue
     if [[ $generate_config_file_continue =~ "y"|"Y" ]]; then
@@ -390,8 +390,8 @@ generate_config_file() {
         cd /etc/XrayR
         wget --no-check-certificate -O domain.cert $CertUrl
         wget --no-check-certificate -O domain.key $KeyUrl
-        mv config.yml config.yml.bak
-        cat <<EOF > /etc/XrayR/config.yml
+        mv aiko.yml aiko.yml.bak
+        cat <<EOF > /etc/XrayR/aiko.yml
 Log:
   Level: warning # Log level: none, error, warning, info, debug 
   AccessPath: # /etc/XrayR/access.Log
