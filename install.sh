@@ -114,7 +114,7 @@ install_XrayR() {
             exit 1
         fi
         echo -e "检测到 XrayR 最新版本：${last_version}，开始安装"
-        wget -N --no-check-certificate -O /usr/local/XrayR/AikoXrayR-linux.zip https://github.com/AikoXrayR-Project/XrayR/releases/download/${last_version}/AikoXrayR-linux-${arch}.zip
+        wget -N --no-check-certificate -O /usr/local/XrayR/AikoAikoXrayR-linux.zip https://github.com/AikoXrayR-Project/XrayR/releases/download/${last_version}/AikoXrayR-linux-${arch}.zip
         if [[ $? -ne 0 ]]; then
             echo -e "${red}下载 XrayR 失败，请确保你的服务器能够下载 Github 的文件${plain}"
             exit 1
@@ -123,20 +123,20 @@ install_XrayR() {
         last_version=$1
         url="https://github.com/AikoXrayR-Project/XrayR/releases/download/${last_version}/AikoXrayR-linux-${arch}.zip"
         echo -e "开始安装 XrayR v$1"
-        wget -q -N --no-check-certificate -O /usr/local/XrayR/AikoXrayR-linux.zip ${url}
+        wget -N --no-check-certificate -O /usr/local/XrayR/AikoAikoXrayR-linux.zip ${url}
         if [[ $? -ne 0 ]]; then
             echo -e "${red}下载 XrayR v$1 失败，请确保此版本存在${plain}"
             exit 1
         fi
     fi
 
-    unzip XrayR-linux.zip
-    rm XrayR-linux.zip -f
+    unzip AikoXrayR-linux.zip
+    rm AikoXrayR-linux.zip -f
     chmod +x XrayR
     mkdir /etc/XrayR/ -p
     rm /etc/systemd/system/XrayR.service -f
     file="https://github.com/fengguowudi/XrayR-script/raw/master/XrayR.service"
-    wget -q -N --no-check-certificate -O /etc/systemd/system/XrayR.service ${file}
+    wget -N --no-check-certificate -O /etc/systemd/system/XrayR.service ${file}
     #cp -f XrayR.service /etc/systemd/system/
     systemctl daemon-reload
     systemctl stop XrayR
