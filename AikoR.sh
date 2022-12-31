@@ -458,8 +458,7 @@ Nodes:
         #Email: test@me.com
         #DNSEnv: # DNS ENV option used by DNS provider
           #ALICLOUD_ACCESS_KEY: aaa
-          #ALICLOUD_SECRET_KEY: bbb
-		  
+          #ALICLOUD_SECRET_KEY: bbb		  
 EOF
         echo -e "${green}AikoR 配置文件生成完成，正在重新启动 AikoR 服务${plain}"
         restart 0
