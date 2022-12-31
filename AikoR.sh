@@ -362,13 +362,13 @@ generate_config_file() {
         echo -e "${green}4. Proxypanel ${plain}"
         read -rp "请输入机场面板 [1-7，默认1]：" PanelType
         case "$PanelType" in
-		    1 ) PanelType="NewV2board" ;;
-			2 ) PanelType="SSpanel" ;;
-			3 ) PanelType="V2board" ;;
+            1 ) PanelType="NewV2board" ;;
+            2 ) PanelType="SSpanel" ;;
+            3 ) PanelType="V2board" ;;
             4 ) PanelType="PMpanel" ;;
             5 ) PanelType="V2RaySocks" ;;
-			6 ) PanelType="Xflash" ;;
-			7 ) PanelType="Proxypanel" ;;
+            6 ) PanelType="Xflash" ;;
+            7 ) PanelType="Proxypanel" ;;
             * ) PanelType="NewV2board" ;;
         esac
         read -rp "请输入机场网址：" ApiHost
