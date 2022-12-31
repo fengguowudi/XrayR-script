@@ -1,5 +1,5 @@
 [Unit]
-Description=XrayR Service
+Description=AikoR Service
 After=network.target nss-lookup.target
 Wants=network.target
 
@@ -10,9 +10,11 @@ Type=simple
 LimitAS=infinity
 LimitRSS=infinity
 LimitCORE=infinity
-LimitNOFILE=999999
-WorkingDirectory=/usr/local/XrayR/
-ExecStart=/usr/local/XrayR/XrayR -config /etc/XrayR/aiko.yml
+LimitNOFILE=infinity
+LimitNPROC=10000
+LimitNOFILE=1000000
+WorkingDirectory=/usr/local/AikoR/
+ExecStart=/usr/local/AikoR/AikoR -config /etc/AikoR/aiko.yml
 Restart=on-failure
 RestartSec=10
 Environment="XRAY_VMESS_AEAD_FORCED=false"

@@ -84,10 +84,10 @@ install_base() {
 
 # 0: running, 1: not running, 2: not installed
 check_status() {
-    if [[ ! -f /etc/systemd/system/XrayR.service ]]; then
+    if [[ ! -f /etc/systemd/system/AikoR.service ]]; then
         return 2
     fi
-    temp=$(systemctl status XrayR | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+    temp=$(systemctl status AikoR | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
     if [[ x"${temp}" == x"running" ]]; then
         return 0
     else
@@ -99,110 +99,107 @@ install_acme() {
     curl https://get.acme.sh | sh
 }
 
-install_XrayR() {
-    if [[ -e /usr/local/XrayR/ ]]; then
-        rm -rf /usr/local/XrayR/
+install_AikoR() {
+    if [[ -e /usr/local/AikoR/ ]]; then
+        rm -rf /usr/local/AikoR/
     fi
 
-    mkdir /usr/local/XrayR/ -p
-    cd /usr/local/XrayR/
+    mkdir /usr/local/AikoR/ -p
+    cd /usr/local/AikoR/
 
     if  [ $# == 0 ] ;then
-        last_version=$(curl -Ls "https://api.github.com/repos/AikoXrayR-Project/XrayR/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        last_version=$(curl -Ls "https://api.github.com/repos/AikoCute-Offical/AikoR/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
-            echo -e "${red}检测 XrayR 版本失败，可能是超出 Github API 限制，请稍后再试，或手动指定 XrayR 版本安装${plain}"
+            echo -e "${red}检测 AikoR 版本失败，可能是超出 Github API 限制，请稍后再试，或手动指定 AikoR 版本安装${plain}"
             exit 1
         fi
-        echo -e "检测到 XrayR 最新版本：${last_version}，开始安装"
-        wget -N --no-check-certificate -O /usr/local/XrayR/AikoXrayR-linux.zip https://github.com/AikoXrayR-Project/XrayR/releases/download/${last_version}/AikoXrayR-linux-${arch}.zip
+        echo -e "检测到 AikoR 最新版本：${last_version}，开始安装"
+        wget -N --no-check-certificate -O /usr/local/AikoR/AikoR-linux.zip https://github.com/AikoCute-Offical/AikoR/releases/download/${last_version}/AikoR-linux-${arch}.zip
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}下载 XrayR 失败，请确保你的服务器能够下载 Github 的文件${plain}"
+            echo -e "${red}下载 AikoR 失败，请确保你的服务器能够下载 Github 的文件${plain}"
             exit 1
         fi
     else
         last_version=$1
-        url="https://github.com/AikoXrayR-Project/XrayR/releases/download/${last_version}/AikoXrayR-linux-${arch}.zip"
-        echo -e "开始安装 XrayR v$1"
-        wget -N --no-check-certificate -O /usr/local/XrayR/AikoXrayR-linux.zip ${url}
+        url="https://github.com/AikoCute-Offical/AikoR/releases/download/${last_version}/AikoR-linux-${arch}.zip"
+        echo -e "开始安装 AikoR v$1"
+        wget -N --no-check-certificate -O /usr/local/AikoR/AikoR-linux.zip ${url}
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}下载 XrayR v$1 失败，请确保此版本存在${plain}"
+            echo -e "${red}下载 AikoR v$1 失败，请确保此版本存在${plain}"
             exit 1
         fi
     fi
 
-    unzip AikoXrayR-linux.zip
-    rm AikoXrayR-linux.zip -f
-    chmod +x XrayR
-    mkdir /etc/XrayR/ -p
-    rm /etc/systemd/system/XrayR.service -f
-    file="https://github.com/fengguowudi/XrayR-script/raw/master/XrayR.service"
-    wget -N --no-check-certificate -O /etc/systemd/system/XrayR.service ${file}
-    #cp -f XrayR.service /etc/systemd/system/
+    unzip AikoR-linux.zip
+    rm AikoR-linux.zip -f
+    chmod +x AikoR
+    mkdir /etc/AikoR/ -p
+    rm /etc/systemd/system/AikoR.service -f
+    file="https://github.com/fengguowudi/AikoR-script/raw/master/AikoR.service"
+    wget -N --no-check-certificate -O /etc/systemd/system/AikoR.service ${file}
+    #cp -f AikoR.service /etc/systemd/system/
     systemctl daemon-reload
-    systemctl stop XrayR
-    systemctl enable XrayR
-    echo -e "${green}XrayR ${last_version}${plain} 安装完成，已设置开机自启"
-    cp geoip.dat /etc/XrayR/
-    cp geosite.dat /etc/XrayR/ 
+    systemctl stop AikoR
+    systemctl enable AikoR
+    echo -e "${green}AikoR ${last_version}${plain} 安装完成, 并已设为开机自动启动"
+    cp geoip.dat /etc/AikoR/
+    cp geosite.dat /etc/AikoR/
 
-    if [[ ! -f /etc/XrayR/aiko.yml ]]; then
-        cp aiko.yml /etc/XrayR/
+    if [[ ! -f /etc/AikoR/aiko.yml ]]; then
+        cp aiko.yml /etc/AikoR/
         echo -e ""
-        echo -e "全新安装，请先参看教程：https://github.com/AikoXrayR-Project/XrayR，配置必要的内容"
+        echo -e "全新安装，请先参看教程：https://github.com/AikoCute-Offical/AikoR，配置必要的内容"
     else
-        systemctl start XrayR
+        systemctl start AikoR
         sleep 2
         check_status
         echo -e ""
         if [[ $? == 0 ]]; then
-            echo -e "${green}XrayR 重启成功${plain}"
+            echo -e "${green}AikoR 重启完成${plain}"
         else
-            echo -e "${red}XrayR 可能启动失败，请稍后使用 XrayR log 查看日志信息，若无法启动，则可能更改了配置格式，请前往 wiki 查看：https://github.com/AikoXrayR-Project/XrayR/wiki${plain}"
+            echo -e "${red}AikoR 可能启动失败，请稍后使用 AikoR log 查看日志信息，若无法启动，则可能更改了配置格式，请前往 wiki 查看：https://github.com/AikoCute-Offical/AikoR${plain}"
         fi
     fi
 
-    if [[ ! -f /etc/XrayR/dns.json ]]; then
-        cp dns.json /etc/XrayR/
+    if [[ ! -f /etc/AikoR/dns.json ]]; then
+        cp dns.json /etc/AikoR/
     fi
-    if [[ ! -f /etc/XrayR/route.json ]]; then
-        cp route.json /etc/XrayR/
+    if [[ ! -f /etc/AikoR/route.json ]]; then
+        cp route.json /etc/AikoR/
     fi
-    if [[ ! -f /etc/XrayR/custom_outbound.json ]]; then
-        cp custom_outbound.json /etc/XrayR/
+    if [[ ! -f /etc/AikoR/custom_outbound.json ]]; then
+        cp custom_outbound.json /etc/AikoR/
     fi
-    if [[ ! -f /etc/XrayR/custom_inbound.json ]]; then
-        cp custom_inbound.json /etc/XrayR/
+    if [[ ! -f /etc/AikoR/AikoBlock ]]; then
+        cp AikoBlock /etc/AikoR/
     fi
-    if [[ ! -f /etc/XrayR/rulelist ]]; then
-        cp rulelist /etc/XrayR/
-    fi
-    curl -o /usr/bin/XrayR -Ls https://raw.githubusercontent.com/fengguowudi/XrayR-script/master/XrayR.sh
-    chmod +x /usr/bin/XrayR
-    ln -s /usr/bin/XrayR /usr/bin/xrayr # 小写兼容
-    chmod +x /usr/bin/xrayr
+    curl -o /usr/bin/AikoR -Ls https://raw.githubusercontent.com/fengguowudi/AikoR-script/master/AikoR.sh
+    chmod +x /usr/bin/AikoR
+    ln -s /usr/bin/AikoR /usr/bin/aikor # 小写兼容
+    chmod +x /usr/bin/aikor
     cd $cur_dir
     rm -f install.sh
     echo -e ""
-    echo "XrayR 管理脚本使用方法 (兼容使用xrayr执行，大小写不敏感): "
+    echo "AikoR 管理脚本使用方法 (兼容使用xrayr执行，大小写不敏感): "
     echo "------------------------------------------"
-    echo "XrayR              - 显示管理菜单 (功能更多)"
-    echo "XrayR start        - 启动 XrayR"
-    echo "XrayR stop         - 停止 XrayR"
-    echo "XrayR restart      - 重启 XrayR"
-    echo "XrayR status       - 查看 XrayR 状态"
-    echo "XrayR enable       - 设置 XrayR 开机自启"
-    echo "XrayR disable      - 取消 XrayR 开机自启"
-    echo "XrayR log          - 查看 XrayR 日志"
-    echo "XrayR generate     - 生成 XrayR 配置文件"
-    echo "XrayR update       - 更新 XrayR"
-    echo "XrayR update x.x.x - 更新 XrayR 指定版本"
-    echo "XrayR install      - 安装 XrayR"
-    echo "XrayR uninstall    - 卸载 XrayR"
-    echo "XrayR version      - 查看 XrayR 版本"
+    echo "AikoR              - 显示管理菜单 (功能更多)"
+    echo "AikoR start        - 启动 AikoR"
+    echo "AikoR stop         - 停止 AikoR"
+    echo "AikoR restart      - 重启 AikoR"
+    echo "AikoR status       - 查看 AikoR 状态"
+    echo "AikoR enable       - 设置 AikoR 开机自启"
+    echo "AikoR disable      - 取消 AikoR 开机自启"
+    echo "AikoR log          - 查看 AikoR 日志"
+    echo "AikoR generate     - 生成 AikoR 配置文件"
+    echo "AikoR update       - 更新 AikoR"
+    echo "AikoR update x.x.x - 更新 AikoR 指定版本"
+    echo "AikoR install      - 安装 AikoR"
+    echo "AikoR uninstall    - 卸载 AikoR"
+    echo "AikoR version      - 查看 AikoR 版本"
     echo "------------------------------------------"
 }
 
 echo -e "${green}开始安装${plain}"
 install_base
 install_acme
-install_XrayR $1
+install_AikoR $1
