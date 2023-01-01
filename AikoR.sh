@@ -356,10 +356,13 @@ generate_config_file() {
     read -rp "是否继续生成配置文件？(y/n)" generate_config_file_continue
     if [[ $generate_config_file_continue =~ "y"|"Y" ]]; then
         echo -e "${yellow}请选择你的机场面板，如未列出则不支持：${plain}"
-        echo -e "${green}1. SSpanel ${plain}"
-        echo -e "${green}2. V2board ${plain}"
-        echo -e "${green}3. PMpanel ${plain}"
-        echo -e "${green}4. Proxypanel ${plain}"
+        echo -e "${green}1. NewV2board ${plain}"
+        echo -e "${green}2. SSpanel ${plain}"
+        echo -e "${green}3. V2board ${plain}"
+        echo -e "${green}4. PMpanel ${plain}"
+        echo -e "${green}5. V2RaySocks ${plain}"
+        echo -e "${green}6. Xflash ${plain}"
+        echo -e "${green}7. Proxypanel ${plain}"
         read -rp "请输入机场面板 [1-7，默认1]：" PanelType
         case "$PanelType" in
             1 ) PanelType="NewV2board" ;;
